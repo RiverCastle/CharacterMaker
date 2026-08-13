@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>배경 이미지 관리</title>
+	<link rel="stylesheet" href="/assets/css/style.css">
+	<link rel="stylesheet" href="/admin/assets/css/admin.css">
+</head>
+<body>
+	<main class="container">
+		<h1>배경 이미지 관리</h1>
+		<p class="subtitle">캐리커처에 사용할 배경 이미지를 여러 개 등록하세요. (로그인 없이 URL로만 접근하는 관리자 페이지입니다)</p>
+
+		<div id="dropZone" class="drop-zone">
+			<p>배경 이미지를 여기에 드래그하거나 클릭해서 추가하세요</p>
+			<input type="file" id="fileInput" accept="image/*" hidden>
+		</div>
+
+		<p id="statusMessage" hidden></p>
+
+		<h2 class="gallery-title">등록된 배경 이미지</h2>
+		<div id="gallery" class="background-gallery"></div>
+		<p id="emptyMessage" class="subtitle" hidden>등록된 배경 이미지가 없습니다.</p>
+	</main>
+
+	<script src="/admin/assets/js/admin.js"></script>
+</body>
+</html>
