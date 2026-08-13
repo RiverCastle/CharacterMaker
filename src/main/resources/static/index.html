@@ -29,6 +29,30 @@
 		</div>
 
 		<button id="convertBtn" disabled>캐리커처로 변환하기</button>
+
+		<section class="background-section">
+			<h2>배경 이미지 선택</h2>
+			<p class="section-hint">캐리커처와 합성할 배경 이미지를 선택하세요.</p>
+			<div id="backgroundGallery" class="background-gallery"></div>
+			<p id="backgroundEmptyMessage" class="section-hint" hidden>등록된 배경 이미지가 없습니다.</p>
+
+			<div id="compositeStage" class="composite-stage" hidden>
+				<img id="compositeBackground" alt="선택한 배경">
+				<div id="compositeOverlay" class="composite-overlay">
+					<img id="compositeOverlayImg" alt="배치 중인 캐리커처">
+					<div id="resizeHandle" class="resize-handle"></div>
+				</div>
+			</div>
+			<p class="section-hint">캐리커처를 드래그해서 위치를 옮기고, 모서리 손잡이로 크기를 조절하세요.</p>
+
+			<button id="compositeBtn" disabled>배경과 합성하기</button>
+
+			<div class="preview-box composite-result-box">
+				<h2>합성 결과</h2>
+				<img id="compositeResult" alt="합성 결과">
+			</div>
+		</section>
+
 		<a id="downloadBtn" class="download-btn" hidden download>캐리커처 다운로드</a>
 		<p id="errorMessage" class="error" hidden></p>
 	</main>
