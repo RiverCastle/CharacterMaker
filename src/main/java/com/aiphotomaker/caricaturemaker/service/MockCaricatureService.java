@@ -62,7 +62,7 @@ public class MockCaricatureService implements CaricatureService {
 					continue;
 				}
 				boolean isOutline = edges[idx] || touchesBackground(background, width, height, x, y);
-				outPixels[idx] = isOutline ? 0xFF000000 : 0x00000000;
+				outPixels[idx] = isOutline ? 0xFF000000 : 0xFFFFFFFF;
 			}
 		}
 

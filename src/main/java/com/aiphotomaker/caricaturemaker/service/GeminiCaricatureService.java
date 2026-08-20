@@ -27,20 +27,45 @@ import java.util.Iterator;
 public class GeminiCaricatureService implements CaricatureService {
 
 	private static final String STYLE_PROMPT = """
-			Turn the person in this photo into a black-and-white hand-drawn caricature \
-			line-art illustration, like a caricature artist's ink sketch.
-			- Slightly exaggerate the head size relative to the body, like a caricature.
+			Redraw this photo as a black-and-white hand-drawn line-art illustration of ONLY \
+			the people in it, like an ink sketch traced over just the people. This is not a \
+			portrait of a single subject, and it is not a drawing of the scene or setting.
+			- Include every person visible anywhere in the photo, including people who are \
+			small, partially visible, blurry, or far in the background. Do not drop, crop out, \
+			or merge any person into the background - if a person appears in the photo, they \
+			must appear in the illustration.
+			- Preserve the original composition exactly: keep every person's pose, position, \
+			and size relative to each other and to the frame the same as in the source photo. \
+			Do not zoom in, crop, or re-frame around one person.
 			- Simplify facial features into minimal, iconic hand-drawn linework: small dot or \
-			simple line eyes, the nose reduced to a single curved line, a simple mouth line.
-			- Use bold, uniform-width black ink outlines only.
-			- Absolutely no color, no shading, no cross-hatching, no gray fill.
-			- Plain solid white background, no scenery or objects.
-			- Keep the person's likeness, hairstyle, and clothing recognizable but drawn in \
-			this simplified cartoon line style.
+			simple line eyes, the nose reduced to a single curved line, a simple mouth line. \
+			Apply this the same way to every person in the photo, near or far.
+			- Use bold, uniform-width black ink outlines only for the people, with the inside \
+			of every figure filled pure white.
+			- Absolutely no color, no shading, no cross-hatching, no gray fill anywhere on any figure.
+			- Everything that is not a person - trees, plants, buildings, furniture, chairs, \
+			vehicles, sky, ground, walls, railings, or any other object or scenery - must be \
+			completely deleted and replaced by a flat, solid, uniform chroma-key green (#00FF00) \
+			fill. This green area is a plain blank fill with zero linework, outlines, texture, \
+			gradient, or shading in it - do not draw the background scene in green ink, just \
+			remove it entirely down to flat green. The green must appear only in this blank \
+			fill, never on or touching a person.
+			- Keep each person's likeness, hairstyle, and clothing recognizable but drawn in \
+			this simplified line style.
 			Output only the illustration.""";
 
 	// Output aspect ratio is fixed to 1:1 for now; a future "9:16" option can reuse this field.
 	private static final String ASPECT_RATIO = "1:1";
+
+	// The prompt asks Gemini for a flat chroma-key green background (never used elsewhere in
+	// the black-and-white line art), so background removal is a simple per-pixel color-distance
+	// key instead of flood-fill - it doesn't depend on the outline forming a closed loop, which
+	// generated line art isn't guaranteed to do.
+	private static final int KEY_R = 0;
+	private static final int KEY_G = 255;
+	private static final int KEY_B = 0;
+	private static final double KEY_LOW_DISTANCE = 60;
+	private static final double KEY_HIGH_DISTANCE = 160;
 
 	private final RestClient restClient;
 	private final String apiKey;
@@ -98,10 +123,49 @@ public class GeminiCaricatureService implements CaricatureService {
 		if (image == null) {
 			throw new IOException("Gemini가 반환한 이미지를 디코딩할 수 없습니다.");
 		}
+		BufferedImage transparent = keyOutGreenScreen(image);
 
 		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		ImageIO.write(image, "png", out);
+		ImageIO.write(transparent, "png", out);
 		return out.toByteArray();
+	}
+
+	private BufferedImage keyOutGreenScreen(BufferedImage image) {
+		int width = image.getWidth();
+		int height = image.getHeight();
+		int[] pixels = image.getRGB(0, 0, width, height, null, 0, width);
+		int[] outPixels = new int[pixels.length];
+
+		for (int i = 0; i < pixels.length; i++) {
+			int rgb = pixels[i];
+			int r = (rgb >> 16) & 0xFF;
+			int g = (rgb >> 8) & 0xFF;
+			int b = rgb & 0xFF;
+
+			double distance = keyDistance(r, g, b);
+			int alpha;
+			if (distance <= KEY_LOW_DISTANCE) {
+				alpha = 0;
+			} else if (distance >= KEY_HIGH_DISTANCE) {
+				alpha = 255;
+			} else {
+				// Feather the cutout edge instead of a hard cutoff, so anti-aliased pixels
+				// between the green background and the line art don't leave a green fringe.
+				alpha = (int) Math.round(255.0 * (distance - KEY_LOW_DISTANCE) / (KEY_HIGH_DISTANCE - KEY_LOW_DISTANCE));
+			}
+			outPixels[i] = (alpha << 24) | (r << 16) | (g << 8) | b;
+		}
+
+		BufferedImage result = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		result.setRGB(0, 0, width, height, outPixels, 0, width);
+		return result;
+	}
+
+	private double keyDistance(int r, int g, int b) {
+		int dr = r - KEY_R;
+		int dg = g - KEY_G;
+		int db = b - KEY_B;
+		return Math.sqrt((double) (dr * dr + dg * dg + db * db));
 	}
 
 	private String extractImageBase64(JsonNode response) {
