@@ -59,3 +59,57 @@
 #statusMessage.success {
 	color: #00b894;
 }
+
+.font-list {
+	display: flex;
+	flex-direction: column;
+	gap: 10px;
+	margin-top: 16px;
+}
+
+.font-item {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	padding: 12px 16px;
+	border-radius: 10px;
+	background: #f5f6fa;
+}
+
+.font-preview {
+	font-size: 18px;
+	color: #2d3436;
+}
+
+.font-item .delete-btn {
+	position: static;
+	flex-shrink: 0;
+	width: 26px;
+	height: 26px;
+	margin: 0;
+	padding: 0;
+	border: none;
+	border-radius: 50%;
+	background: rgba(0, 0, 0, 0.6);
+	color: #fff;
+	font-size: 14px;
+	line-height: 1;
+	cursor: pointer;
+}
+
+.font-item .delete-btn:hover {
+	background: rgba(214, 48, 49, 0.85);
+}
+
+#fontStatusMessage {
+	text-align: center;
+	margin-top: 16px;
+}
+
+#fontStatusMessage.error {
+	color: #d63031;
+}
+
+#fontStatusMessage.success {
+	color: #00b894;
+}

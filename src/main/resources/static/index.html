@@ -30,6 +30,12 @@
 
 		<button id="convertBtn" disabled>캐리커처로 변환하기</button>
 
+		<p class="section-hint">또는, 이미 만들어진 캐리커처 이미지를 업로드해서 변환 단계를 건너뛸 수 있습니다.</p>
+		<div id="caricatureDropZone" class="drop-zone">
+			<p>완성된 캐리커처 이미지를 여기에 드래그하거나 클릭해서 업로드하세요</p>
+			<input type="file" id="caricatureFileInput" accept="image/*" hidden>
+		</div>
+
 		<section class="background-section">
 			<h2>배경 이미지 선택</h2>
 			<p class="section-hint">캐리커처와 합성할 배경 이미지를 선택하세요.</p>
@@ -42,8 +48,28 @@
 					<img id="compositeOverlayImg" alt="배치 중인 캐리커처">
 					<div id="resizeHandle" class="resize-handle"></div>
 				</div>
+				<div id="textOverlay" class="text-overlay" hidden>
+					<span id="textOverlayLabel" class="text-overlay-label"></span>
+					<div id="textResizeHandle" class="resize-handle text-resize-handle"></div>
+				</div>
 			</div>
 			<p class="section-hint">캐리커처를 드래그해서 위치를 옮기고, 모서리 손잡이로 크기를 조절하세요.</p>
+
+			<div class="promo-text-controls">
+				<label for="promoTextInput" class="promo-text-label">홍보 문구</label>
+				<textarea id="promoTextInput" class="promo-textarea" rows="2" placeholder="예: 신제품 출시 기념 이벤트!" maxlength="120"></textarea>
+				<div class="promo-color-row">
+					<label for="promoTextColor" class="promo-color-label">글자 색상</label>
+					<input type="color" id="promoTextColor" class="promo-color-input" value="#000000">
+				</div>
+				<div class="promo-font-row">
+					<label for="promoFontSelect" class="promo-color-label">폰트</label>
+					<select id="promoFontSelect" class="promo-font-select">
+						<option value="">기본 폰트</option>
+					</select>
+				</div>
+			</div>
+			<p class="section-hint">홍보 문구를 입력하면 이미지 위에 나타납니다. 드래그로 위치를, 모서리 손잡이로 글자 크기를 조절하세요.</p>
 
 			<button id="compositeBtn" disabled>배경과 합성하기</button>
 

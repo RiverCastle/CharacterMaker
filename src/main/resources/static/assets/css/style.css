@@ -156,6 +156,86 @@ button:not(:disabled):hover {
 	font-size: 13px;
 }
 
+.promo-text-controls {
+	margin-top: 16px;
+}
+
+.promo-text-label {
+	display: block;
+	font-size: 13px;
+	font-weight: 600;
+	color: #2d3436;
+	margin-bottom: 6px;
+}
+
+.promo-textarea {
+	width: 100%;
+	padding: 12px 14px;
+	font-family: inherit;
+	font-size: 14px;
+	color: #2d3436;
+	border: 2px solid #dfe4ea;
+	border-radius: 10px;
+	resize: vertical;
+	transition: border-color 0.2s;
+}
+
+.promo-textarea:focus {
+	outline: none;
+	border-color: #6c5ce7;
+}
+
+.promo-color-row {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin-top: 10px;
+}
+
+.promo-color-label {
+	font-size: 13px;
+	color: #636e72;
+}
+
+.promo-color-input {
+	width: 40px;
+	height: 32px;
+	padding: 0;
+	border: 2px solid #dfe4ea;
+	border-radius: 8px;
+	cursor: pointer;
+	background: none;
+}
+
+.promo-color-input:focus {
+	outline: none;
+	border-color: #6c5ce7;
+}
+
+.promo-font-row {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	margin-top: 10px;
+}
+
+.promo-font-select {
+	flex: 1;
+	padding: 8px 10px;
+	font-family: inherit;
+	font-size: 14px;
+	color: #2d3436;
+	border: 2px solid #dfe4ea;
+	border-radius: 8px;
+	background: #fff;
+	cursor: pointer;
+}
+
+.promo-font-select:focus {
+	outline: none;
+	border-color: #6c5ce7;
+}
+
 .background-gallery {
 	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
@@ -216,6 +296,7 @@ button:not(:disabled):hover {
 	background: #f1f2f6;
 	touch-action: none;
 	user-select: none;
+	container-type: inline-size;
 }
 
 .composite-stage img#compositeBackground {
@@ -257,6 +338,36 @@ button:not(:disabled):hover {
 	box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
 	cursor: nwse-resize;
 	touch-action: none;
+}
+
+.text-overlay {
+	position: absolute;
+	box-sizing: border-box;
+	padding: 4px 8px;
+	border: 2px dashed #6c5ce7;
+	cursor: grab;
+	touch-action: none;
+	white-space: pre-wrap;
+	max-width: 90%;
+}
+
+.text-overlay:active {
+	cursor: grabbing;
+}
+
+.text-overlay-label {
+	display: block;
+	font-weight: bold;
+	line-height: 1.25;
+	white-space: pre-wrap;
+	word-break: break-word;
+	pointer-events: none;
+}
+
+.text-resize-handle {
+	right: -10px;
+	bottom: -10px;
+	cursor: ns-resize;
 }
 
 .composite-result-box {

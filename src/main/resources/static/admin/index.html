@@ -22,6 +22,16 @@
 		<h2 class="gallery-title">등록된 배경 이미지</h2>
 		<div id="gallery" class="background-gallery"></div>
 		<p id="emptyMessage" class="subtitle" hidden>등록된 배경 이미지가 없습니다.</p>
+
+		<h2 class="gallery-title">폰트 등록</h2>
+		<p class="subtitle">메인 페이지 홍보 문구에서 선택할 수 있는 폰트를 등록하세요. (.ttf, .otf, .woff, .woff2)</p>
+		<div id="fontDropZone" class="drop-zone">
+			<p>폰트 파일을 여기에 드래그하거나 클릭해서 추가하세요</p>
+			<input type="file" id="fontFileInput" accept=".ttf,.otf,.woff,.woff2" hidden>
+		</div>
+		<p id="fontStatusMessage" hidden></p>
+		<div id="fontList" class="font-list"></div>
+		<p id="fontEmptyMessage" class="subtitle" hidden>등록된 폰트가 없습니다.</p>
 	</main>
 
 	<script src="/admin/assets/js/admin.js"></script>
